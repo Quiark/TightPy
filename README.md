@@ -7,7 +7,11 @@ Tight Python project integration for Vim
 Installation
 ============
 
-Please use Vundle or other Vim package manager of your choice.
+Please use Vundle or other Vim package manager of your choice. Also recommended are the following dependencies:
+
+* `Quiark/qtpy-vim` 
+* Exuberant Ctags 
+* Ack 2.0
 
 Usage
 =====
