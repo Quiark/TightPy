@@ -99,7 +99,7 @@ endfunction
 
 function! TightPy_InitAck()
 	let g:tightpy_proj_ackdirs = join(map(g:tightpy_proj_pythondirs, 'v:val'), ' ')
-	let &grepprg='ack -n $* ' . g:tightpy_proj_ackdirs
+	let &grepprg='ack -n --ignore-file=is:.coverage $* ' . g:tightpy_proj_ackdirs
 endfunction
 
 function! TightPy_MakeTags()
