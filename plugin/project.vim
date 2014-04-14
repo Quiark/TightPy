@@ -38,9 +38,10 @@ function! TightPy_Init()
 	let g:tightpy_proj_pythondirs=['.']
 
 	" menu items
-	menu &Plugin.QTPY.Run\ method			:QTPY method<CR>
-	menu &Plugin.QTPY.Run\ class			:QTPY class<CR>
-	menu &Plugin.QTPY.Run\ file				:QTPY file<CR>
+	menu &Plugin.QTP&Y.Run\ &method			:QTPY method<CR>
+	menu &Plugin.QTP&Y.Run\ &class			:QTPY class<CR>
+	menu &Plugin.QTP&Y.Run\ &file			:QTPY file<CR>
+	menu &Plugin.QTP&Y.Run\ &last			:QTPY last<CR>
 	menu &Plugin.T&ightPy.Open\ &log		:call TightPy_OpenLog()<CR>
 	menu &Plugin.T&ightPy.Load\ log			:call TightPy_GetLog()<CR>
 	menu &Plugin.T&ightPy.Copy\ &Breakpoint :call TightPy_CopyBp()<CR>
@@ -64,7 +65,7 @@ function! TightPy_RomanWin_Cfg()
 
 	call TightPy_InitAck()
 
-	map <F6> :QTPY method<CR>
+	map <F6> :QTPY last<CR>
 endfunction
 
 function! TightPy_RunApp()
@@ -79,7 +80,12 @@ endfunction
 
 function! TightPy_QTPY_EnableDebug(val)
 	if (a:val)
-		let g:qtpy_debugger = 'winpdb'
+		if has('win32')
+			let g:qtpy_debugger = 'start winpdb.bat'
+		else
+			let g:qtpy_debugger = 'winpdb'
+		endif
+
 		let g:qtpy_shell_command = 'nosetests-script.py'
 	else
 		let g:qtpy_debugger = ''
@@ -99,7 +105,7 @@ endfunction
 
 function! TightPy_InitAck()
 	let g:tightpy_proj_ackdirs = join(map(g:tightpy_proj_pythondirs, 'v:val'), ' ')
-	let &grepprg='ack -n --ignore-file=is:.coverage $* ' . g:tightpy_proj_ackdirs
+	let &grepprg='ack -n --ignore-file=is:.coverage --ignore-file=is:tags $* ' . g:tightpy_proj_ackdirs
 endfunction
 
 function! TightPy_MakeTags()
@@ -107,7 +113,10 @@ function! TightPy_MakeTags()
 endfunction
 
 " TODO:
+"	- debugger test starts in project/tests as current dir, no-good
+"
 "	+ making tags
+"	+ re-run last test on <F6>
 "	+ grepping (with ignore folders)
 "	+ print curret file name and line to quickly make a breakpoint
 "		bp key4two.py:123
