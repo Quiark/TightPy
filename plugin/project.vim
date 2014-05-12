@@ -46,9 +46,10 @@ function! TightPy_Init()
 	menu &Plugin.T&ightPy.Load\ log			:call TightPy_GetLog()<CR>
 	menu &Plugin.T&ightPy.Copy\ &Breakpoint :call TightPy_CopyBp()<CR>
 	menu &Plugin.T&ightPy.Run				:call TightPy_RunApp()<CR>
-	menu &Plugin.T&ightPy.Debug\ tests.Enable	:call TightPy_QTPY_EnableDebug(1)<CR>
-	menu &Plugin.T&ightPy.Debug\ tests.Disable	:call TightPy_QTPY_EnableDebug(0)<CR>
-	menu &Plugin.T&ightPy.&Generate\ tags		:call TightPy_MakeTags()<CR>
+	menu &Plugin.T&ightPy.Debug\ tests.Enable		:call TightPy_QTPY_EnableDebug(1)<CR>
+	menu &Plugin.T&ightPy.Debug\ tests.Disable		:call TightPy_QTPY_EnableDebug(0)<CR>
+	menu &Plugin.T&ightPy.&Generate\ tags			:call TightPy_MakeTags()<CR>
+	menu &Plugin.T&ightPy.Run\ method\ in\ &debug	:call TightPy_RunMethodInDebug()<CR>
 
 endfunction
 
@@ -112,8 +113,17 @@ function! TightPy_MakeTags()
     exe 'silent !ctags ' . join(map(g:tightpy_proj_pythondirs, 'v:val . "/*"'), ' ')
 endfunction
 
+function! TightPy_RunMethodInDebug()
+	call TightPy_QTPY_EnableDebug(1)
+	exec 'QTPY method'
+	call TightPy_QTPY_EnableDebug(0)
+endfunction
+
 " TODO:
 "	- debugger test starts in project/tests as current dir, no-good
+"		perhaps only on Mac
+"	- make running test under debug faster (it's not enable/disable but rather
+"	one time fire-off, often)
 "
 "	+ making tags
 "	+ re-run last test on <F6>
