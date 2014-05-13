@@ -38,6 +38,7 @@ function! TightPy_Init()
 	let g:tightpy_proj_log_file='app.log'
 	let g:tightpy_proj_mainscript=''
 	let g:tightpy_proj_pythondirs=['.']
+	let g:tightpy_ctags='ctags'
 
 	" menu items
 	menu &Plugin.QTP&Y.Run\ &method			:QTPY method<CR>
@@ -52,6 +53,12 @@ function! TightPy_Init()
 	menu &Plugin.T&ightPy.Debug\ tests.Disable		:call TightPy_QTPY_EnableDebug(0)<CR>
 	menu &Plugin.T&ightPy.&Generate\ tags			:call TightPy_MakeTags()<CR>
 	menu &Plugin.T&ightPy.Run\ method\ in\ &debug	:call TightPy_RunMethodInDebug()<CR>
+
+
+	" local setup
+	if has('mac')
+		call TightPy_Mac_Cfg()
+	endif
 
 endfunction
 
@@ -68,6 +75,10 @@ function! TightPy_RomanWin_Cfg()
 	call TightPy_InitAck()
 
 	map <F6> :QTPY last<CR>
+endfunction
+
+function! TightPy_Mac_Cfg()
+	let g:tightpy_ctags='/usr/local/bin/ctags'
 endfunction
 
 function! TightPy_RunApp()
@@ -111,7 +122,7 @@ function! TightPy_InitAck()
 endfunction
 
 function! TightPy_MakeTags()
-    exe 'silent !ctags ' . join(map(g:tightpy_proj_pythondirs, 'v:val . "/*"'), ' ')
+    exe 'silent !'.g:tightpy_ctags.' '. join(map(g:tightpy_proj_pythondirs, 'v:val . "/*"'), ' ')
 endfunction
 
 function! TightPy_RunMethodInDebug()
