@@ -10,7 +10,10 @@ endif
 python << END
 import os
 import sys
+import vim
 sys.path.append(os.path.split(vim.eval("expand('<sfile>')"))[0])
+
+import openterm
 END
 
 function! TightPy_Init()
@@ -33,7 +36,6 @@ function! TightPy_Init()
 	" defaults
 	let g:tightpy_editor='gvim'
 	let g:tightpy_proj_log_file='app.log'
-	let g:tightpy_run_prog='start'
 	let g:tightpy_proj_mainscript=''
 	let g:tightpy_proj_pythondirs=['.']
 
@@ -61,7 +63,6 @@ endfunction
 
 function! TightPy_RomanWin_Cfg()
 	" Custom settings for Roman's computer (Windows), all projects
-	let g:tightpy_run_prog='c:\Software\ConEmu\conemu64.exe /cmd'
 	let g:pymode_paths = g:tightpy_proj_pythondirs
 
 	call TightPy_InitAck()
@@ -71,7 +72,7 @@ endfunction
 
 function! TightPy_RunApp()
 	wa
-	exec 'silent !'.g:tightpy_run_prog.' python '.g:tightpy_proj_mainscript
+	python openterm.py_execute(vim.eval('g:tightpy_proj_mainscript'))
 endfunction
 
 function! TightPy_GetLog()
