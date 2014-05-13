@@ -92,18 +92,7 @@ function! TightPy_GetLog()
 endfunction
 
 function! TightPy_QTPY_EnableDebug(val)
-	if (a:val)
-		if has('win32')
-			let g:qtpy_debugger = 'start winpdb.bat'
-		else
-			let g:qtpy_debugger = 'winpdb'
-		endif
-
-		let g:qtpy_shell_command = 'nosetests-script.py'
-	else
-		let g:qtpy_debugger = ''
-		let g:qtpy_shell_command = 'nosetests'
-	endif
+	let g:qtpy_debug = a:val
 endfunction
 
 function! TightPy_CopyBp()

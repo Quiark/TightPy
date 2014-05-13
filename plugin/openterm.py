@@ -12,9 +12,9 @@ def openterm_win(command):
 def openterm_2topinka(command):
     return r"c:\Software\ConEmu\conemu64.exe /cmd " + command
 
-def openterm_mac(command):
+def openterm_mac(command, cwd=None):
     cmdfile = tempfile.NamedTemporaryFile(prefix='tpycmd', delete=False)
-    cmdfile.write('cd {0}\n'.format(os.getcwd()))
+    cmdfile.write('cd {0}\n'.format(cwd or os.getcwd()))
     cmdfile.write(command)
 
     os.chmod(cmdfile.name, 0777)
@@ -33,11 +33,35 @@ def openterm(command):
         return openterm_mac(command)
 
 def execute(command):
-    p = subprocess.Popen(openterm(command), shell=True)
     # not waiting
+    return subprocess.Popen(openterm(command), shell=True)
 
-def py_execute(command):
-    return execute('{PY} {cmd}'.format(PY=PY, cmd=command))
+def py_execute(command, wait=False):
+    p = execute('{PY} {cmd}'.format(PY=PY, cmd=command))
+    if wait: p.wait()
+
+
+def nosetests_cmd(params, dbg=False):
+    'Returns the command required to run nosetests on any platform'
+    if platform.system() == 'Windows':
+        return '{winpdb} {cmd} {params}'.format(
+            winpdb='winpdb' if dbg else '',
+            cmd='nosetests-script.py' if dbg else 'nosetests',
+            params=params)
+    else:
+        cmd = '{PY} {winpdb} {pyrun} {cmd} {params}'.format(
+            PY=PY,
+            pyrun='--pyrun=python-32' if dbg else '',
+            winpdb='`which winpdb`' if dbg else '',
+            cmd='`which nosetests`',
+            params=params)
+
+        if dbg:
+            return openterm(cmd)
+        else:
+            return cmd
+
+
 
 if __name__ == '__main__':
-    execute('python')
+    print (nosetests_cmd('tests/misc.py'))
