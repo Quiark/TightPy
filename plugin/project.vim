@@ -125,6 +125,7 @@ endfunction
 "		perhaps only on Mac
 "	- make running test under debug faster (it's not enable/disable but rather
 "	one time fire-off, often)
+"	- since we are using Tabs for Python code, make a highlight rule for ^  
 "
 "	+ making tags
 "	+ re-run last test on <F6>
