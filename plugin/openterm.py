@@ -45,7 +45,7 @@ def nosetests_cmd(params, dbg=False):
     'Returns the command required to run nosetests on any platform'
     if platform.system() == 'Windows':
         return '{winpdb} {cmd} {params}'.format(
-            winpdb='winpdb' if dbg else '',
+            winpdb='start winpdb.bat' if dbg else '',
             cmd='nosetests-script.py' if dbg else 'nosetests',
             params=params)
     else:

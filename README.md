@@ -27,5 +27,12 @@ let g:tightpy_editor='gvim'
 let g:tightpy_proj_mainscript='mainfile.py'
 let g:tightpy_proj_pythondirs=['.', 'tests', 'storage']
 
+```
+
+Then, to open your project in Vim, tell Vim to load your settings.vim:
 
 ```
+gvim -S settings.vim
+```
+
+It's best to create a desktop shortcut or something. The working directory must be the project directory!

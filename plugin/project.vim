@@ -53,6 +53,8 @@ function! TightPy_Init()
 	menu &Plugin.T&ightPy.Debug\ tests.Disable		:call TightPy_QTPY_EnableDebug(0)<CR>
 	menu &Plugin.T&ightPy.&Generate\ tags			:call TightPy_MakeTags()<CR>
 	menu &Plugin.T&ightPy.Run\ method\ in\ &debug	:call TightPy_RunMethodInDebug()<CR>
+	menu &Plugin.T&ightPy.Bro&wse.&tests		:Unite file:tests/<CR>
+	menu &Plugin.T&ightPy.Bro&wse.&resources	:Unite file:resources/<CR>
 
 
 	" local setup
@@ -60,6 +62,8 @@ function! TightPy_Init()
 		call TightPy_Mac_Cfg()
 	endif
 
+
+	syn match Error /^ \+/
 endfunction
 
 
@@ -71,6 +75,7 @@ endfunction
 function! TightPy_RomanWin_Cfg()
 	" Custom settings for Roman's computer (Windows), all projects
 	let g:pymode_paths = g:tightpy_proj_pythondirs
+	setglobal ff=unix
 
 	call TightPy_InitAck()
 
@@ -111,6 +116,7 @@ function! TightPy_InitAck()
 endfunction
 
 function! TightPy_MakeTags()
+	" TODO: detect missing ctags
     exe 'silent !'.g:tightpy_ctags.' '. join(map(g:tightpy_proj_pythondirs, 'v:val . "/*"'), ' ')
 endfunction
 
@@ -121,12 +127,19 @@ function! TightPy_RunMethodInDebug()
 endfunction
 
 " TODO:
+"	- create keyboard shortcuts, on Mac I can't acces the menu for QTPY for
+"	instance
 "	- debugger test starts in project/tests as current dir, no-good
-"		perhaps only on Mac
-"	- make running test under debug faster (it's not enable/disable but rather
-"	one time fire-off, often)
-"	- since we are using Tabs for Python code, make a highlight rule for ^  
+"		actually happens on second run of the debugged test
+"	- since we are using Tabs for Python code, make a highlight rule for 	^space
+"	- RunMethodInTest blocks Vim (on Windows)
+"	- a way to organize tests into groups
+"		- one group for simple fast comprehensive testing
+"		- one group for complete test
+"		- ...
 "
+"	+ make running test under debug faster (it's not enable/disable but rather
+"	one time fire-off, often)
 "	+ making tags
 "	+ re-run last test on <F6>
 "	+ grepping (with ignore folders)
