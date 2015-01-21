@@ -141,6 +141,7 @@ endfunction
 "	instance
 "	- debugger test starts in project/tests as current dir, no-good
 "		actually happens on second run of the debugged test
+"	- since we are using Tabs for Python code, make a highlight rule for 	^space
 "	- RunMethodInTest blocks Vim (on Windows)
 "	- a way to organize tests into groups
 "		- one group for simple fast comprehensive testing
