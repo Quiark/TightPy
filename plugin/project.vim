@@ -30,8 +30,8 @@ function! TightPy_Init()
 	" instead of trying to capture the whole traceback into one error message, we
 	" just capture the individual file locations so that we can go to each of them
 	" easily
-	set errorformat=\ \ File\ \"%f\"\\,\ line\ %l\\,\ %m
-	
+	"set errorformat=\ \ File\ \"%f\"\\,\ line\ %l\\,\ %m
+	compiler simplepy
 
 	" defaults
 	let g:tightpy_editor='gvim'
@@ -55,6 +55,7 @@ function! TightPy_Init()
 	menu &Plugin.T&ightPy.Run\ method\ in\ &debug	:call TightPy_RunMethodInDebug()<CR>
 	menu &Plugin.T&ightPy.Bro&wse.&tests		:Unite file:tests/<CR>
 	menu &Plugin.T&ightPy.Bro&wse.&resources	:Unite file:resources/<CR>
+	menu &Plugin.T&ightPy.Load\ as\ Xunit.xml		:call TightPy_OpenXUnit()<CR>
 
 
 	" local setup
@@ -124,6 +125,15 @@ function! TightPy_RunMethodInDebug()
 	call TightPy_QTPY_EnableDebug(1)
 	exec 'QTPY method'
 	call TightPy_QTPY_EnableDebug(0)
+endfunction
+
+function! TightPy_OpenXUnit()
+python << END
+
+import xunit
+xunit.copen_xunit_xml(vim.current.buffer.name) #vim.eval('expand("%:p")'))
+
+END
 endfunction
 
 " TODO:
